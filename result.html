@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="./jquery.min.js"></script>
+  <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<script type="text/javascript">
+  function a() {
+    $.ajax({
+      url: "https://www.bcuvote.top/qdqq/DelServlet", //servlet文件的名称
+      type: "GET",
+      dataType: 'JSONP',
+      success: function (e) {
+      }
+    });
+
+  }
+  $.ajax({
+    url: "https://www.bcuvote.top/qdqq/SelServlet", //servlet文件的名称
+    type: "GET",
+    dataType: 'JSONP',
+    error:function(e){
+      console.log(e)
+    },
+    success: function (data) {
+      if(data[0]==null){
+        document.getElementById("kingnull").style.display="block";
+        document.getElementById("king").style.display="none";
+        document.getElementById("next").style.margin="120px auto";
+      }else{
+         $("#tx").attr("src",data[0].tx);
+         $("#qname").html(data[0].name);
+      }
+    }
+  });
+</script>
+</head>
+<style media="screen">
+  body{
+    background-image: url("bg3.png");
+    background-repeat: repeat-x;
+    background-color: #f3fbfe;
+    background-size:100% 30%;
+    -moz-background-size:100% 30%;
+  }
+  .result-container {
+    text-align: center;
+  }
+
+  h3 {
+    margin: 80px auto;
+    color: #2a85fc;
+    font-size: 90px;
+    letter-spacing: 30px;
+    font-family: "站酷妙典和风体";
+  }
+
+  .king-container {
+    margin-bottom: 200px;
+    margin-top: 100px;
+    position: relative;
+    align-items:center;
+   justify-content:center;
+  }
+
+  .king {
+    width: 128px;
+    margin-left: -80px;
+  }
+
+  .photo {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    margin-left: -90px;
+    margin-top: 50px;
+    z-index: 5;
+  }
+  .king-container p{
+    font-size: 30px;
+    color: #707070;
+    /* position: absolute; */
+    /* margin-left: 320px; */
+    margin-top: 120px;
+  }
+  .return_time {
+    margin: -120px auto;
+    width: 300px;
+    color: white;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 8px;
+    letter-spacing: 10px;
+    font-size: 20px;
+    background: linear-gradient(to right, #ffbc5b, #ff6739);
+  }
+
+  .return_time a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .return_time a:hover {
+    color: white;
+  }
+  .king-null{
+    padding-top: 50px;
+  }
+  .king-null p{
+    margin-top: 20px;
+    color: #707070;
+    font-size: 50px;
+    letter-spacing: 20px;
+  }
+</style>
+
+<body>
+  <div class="container result-container">
+    <h3>抢答结果</h3>
+    <div class="king-container"  id="king">
+      <img src="./king.png" alt="" class="king">
+      <img src="" alt="" class="photo" id="tx">
+      <p id="qname"></p>
+    </div>
+    <div class="king-null" style="display:none" id="kingnull">
+      <img src="./noqiang.png" alt="">
+      <p>无人抢答</p>
+    </div>
+    <div class="return_time" onclick="a();" id="next">
+      <a href="index.html">
+        下一题抢答
+      </a>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" http-equiv="refresh" content="1">
+  <title></title>
+  <script src="./jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+  <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<script type="text/javascript">
+  window.onload=function(){
+    var url = location.search; //获取url中"?"符后的字串
+     var theRequest = new Object();
+     if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for(var i = 0; i < strs.length; i ++) {
+           theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+        }
+     }
+     $.ajax({
+       url: "https://www.bcuvote.top/qdqq/SelServlet", //servlet文件的名称
+       type: "GET",
+       dataType: 'JSONP',
+       error:function(e){
+         console.log(e)
+       },
+       success: function (data) {
+         var keys=Object.keys(data);
+         var news=[];
+         for(var i=0;i<data.length;i++){
+           if(data[i].ctime<theRequest){
+               var key=keys[i];
+               news[i]=data[key];
+           }
+         }
+         var clist=JSON.stringify(news).toString()
+         console.log(clist)
+         var v = new Vue({
+           el:"#mainlist",
+           data:{
+                rows:news
+           },
+         })
+       }
+     });
+
+
+  }
+  function a() {
+    $.ajax({
+      url: "https://www.bcuvote.top/qdqq/DelServlet", //servlet文件的名称
+      type: "GET",
+      dataType: 'JSONP',
+      success: function (e) {
+      }
+    });
+
+  }
+</script>
+</head>
+<style media="screen">
+    body{
+      background-image: url("bg3.png");
+      background-repeat: repeat-x;
+      background-color: #f3fbfe;
+      background-size:100% 30%;
+      -moz-background-size:100% 30%;
+    }
+  .result-container {
+    text-align: center;
+  }
+
+  h3 {
+    margin: 100px auto;
+    color: #2a85fc;
+    font-size: 90px;
+    letter-spacing: 30px;
+    font-family: "站酷妙典和风体";
+  }
+
+  .king-container {
+    margin-bottom: 200px;
+    margin-top: 100px;
+    position: relative;
+    align-items:center;
+   justify-content:center;
+  }
+
+  .king {
+    width: 128px;
+    margin-left: -80px;
+  }
+
+  .photo {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    margin-left: -90px;
+    margin-top: 50px;
+    z-index: 5;
+  }
+  .king-container p{
+    font-size: 30px;
+    color: #707070;
+    /* position: absolute; */
+    /* margin-left: 320px; */
+    margin-top: 120px;
+  }
+  .return_time {
+    margin: 50px auto;
+    width: 300px;
+    color: white;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 8px;
+    letter-spacing: 10px;
+    font-size: 20px;
+    background: linear-gradient(to right, #ffbc5b, #ff6739);
+  }
+
+  .return_time a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .return_time a:hover {
+    color: white;
+  }
+  .king-null{
+    /* padding-top: 50px; */
+  }
+  .king-null p{
+    margin-top: 20px;
+    color: #707070;
+    font-size: 50px;
+    letter-spacing: 20px;
+  }
+  .qpeople{
+    margin: 0px auto;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: center;
+  }
+  .item{
+    margin: 0px 15px 0px 15px;
+  }
+  .item img{
+    width: 120px;
+    border-radius: 50%;
+  }
+  .item p{
+    margin-top: 10px;
+    font-size:25px;
+  }
+
+</style>
+
+<body>
+  <div class="container result-container">
+    <h3>抢答结果</h3>
+    <!-- <div class="king-container"  id="king">
+      <img src="./king.png" alt="" class="king">
+      <img src="./photo.jpg" alt="" class="photo" id="tx">
+      <p id="qname">呆霸王</p>
+    </div> -->
+    <div class="qpeople" id="mainlist" >
+        <div class="item" v-for="r in rows" >
+          <!-- <img v-bind:src="{{r.tx}}"> -->
+          <img :src="r.tx" />
+          <p>{{r.name}}</p>
+        </div>
+
+    </div>
+
+    <div class="king-null"  id="kingnull">
+      <p>提前抢答</p>
+    </div>
+    <div class="return_time" onclick="a();" id="next">
+      <a href="index.html">
+        重新抢答
+      </a>
+    </div>
+  </div>
+</body>
+
+</html>

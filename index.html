@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="./jquery.min.js"></script>
+    <script type="text/javascript">
+    </script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></head>
+  </head>
+  <style media="screen">
+  body{
+    width: 100%;
+    background-image: url("bg.png");
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    -moz-background-size:100% 100%;
+
+  }
+    #div1{
+      text-align: center;
+      font-size: 200px;
+      width: 20%;
+      margin: 120px auto;
+      color: red;
+    }
+    .begin{
+      width: 40%;
+      background:linear-gradient(to right, #ac4bff,#9666fe);
+      color: white;
+      text-align: center;
+      height: 35px;
+      line-height: 35px;
+      border-radius: 8px;
+      letter-spacing:15px;
+      font-size: 20px;
+      margin: 70px auto;
+    }
+    .reset,.whatch{
+      margin-top: 70rpx;
+      text-align: center;
+      color: white;
+      width: 30%;
+      height: 35px;
+      line-height: 35px;
+      border-radius:8px;
+      letter-spacing: 10px;
+      font-size: 20px;
+      margin-bottom: 90px;
+    }
+    .reset{
+      background: linear-gradient(to right,#ffbc5b, #ff6739);
+
+      margin-left: 75px;
+      float: left;
+    }
+    .whatch{
+      margin-right: 75px;
+      float: right;
+      background:linear-gradient(to right,#33caff, #2a85fc);
+
+    }
+    .whatch a{
+      color: #fff;
+      text-decoration: none;
+    }
+    .whatch  a:hover{color:#fff;}
+    .logo{
+      position: absolute;
+      width: 410px;
+      height: 85px;
+      margin-top: 30px;
+    }
+  </style>
+  <script type="text/javascript">
+   //设定倒数秒数
+   var t = 4;
+   //显示倒数秒数
+   var cpeople='';
+   function re(){
+     $.ajax({
+       url: "https://www.bcuvote.top/qdqq/DelServlet", //servlet文件的名称
+       type: "GET",
+       dataType: 'JSONP',
+       success: function (e) {
+       }
+     });
+   }
+   function showTime(){
+       t -= 1;
+       document.getElementById('div1').innerHTML= t;
+       if(t==0){
+           clearTimeout(meter1);
+           $(".begin").css({background:"linear-gradient(to right, #ac4bff,#9666fe)",color:"#fff"});
+           // location.href='http://www.baidu.com';
+           var timestamp =Date.parse(new Date());
+           $.ajax({
+             url: "https://www.bcuvote.top/qdqq/SelServlet", //servlet文件的名称
+             type: "GET",
+             dataType: 'JSONP',
+             error:function(e){
+               console.log(e)
+             },
+             success: function (data) {
+               if(data[0]!=null){
+                 if(data[0].ctime<timestamp){
+                   location.href='qianglist.html?truetime='+timestamp;
+                 }
+               }
+
+               console.log(data);
+             }
+           });
+           return t=4;
+
+       }
+       //每秒执行一次,showTime()
+       var meter1=setTimeout("showTime()",1500);
+   }
+   function resetmore(){
+     re();
+     $(".begin").css({background:"#D1D1D1",color:"#949494"});
+     $(".reset").css({background:"linear-gradient(to right,#ffbc5b, #ff6739)",color:"white"});
+
+   }
+   console.log("cpeople"+cpeople);
+   function resetTime(){
+     t=4;
+     document.getElementById('div1').innerHTML= t-1;
+     re();
+     $(".reset").css({background:"#FDD69F",color:"#949494"});
+   }
+  </script>
+  <body>
+    <img src="logo.jpg" class="logo">
+    <div class="container">
+      <div id='div1'> <p>3</p> </div>
+      <div  onclick="showTime();resetmore();" class="begin">
+        开始
+      </div>
+      <div  onclick="resetTime();"  class="reset">
+        重置
+      </div>
+      <div  class="whatch" onclick="b();" id="seeresult">
+        <a href="result.html">查看结果</a>
+      </div>
+    </div>
+  </body>
+</html>
